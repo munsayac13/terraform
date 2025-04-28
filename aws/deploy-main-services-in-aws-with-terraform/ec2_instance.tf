@@ -10,7 +10,7 @@ resource "aws_instance" "nodeonelocal" {
 
 
   user_data = templatefile("templates/devops-user-data.tpl", {
-    hostname = var.nodeonelocalname,
+    hostname = local.nodeonelocalname,
     environment = var.myenvironment
   })
 
@@ -20,12 +20,12 @@ resource "aws_instance" "nodeonelocal" {
     volume_size           = 30
     volume_type           = "gp3"
     tags = {
-      Name = var.nodeonelocalname
+      Name = local.nodeonelocalname
     }
   }
   
   tags = {
-    Name = var.nodeonelocalname
+    Name = local.nodeonelocalname
     Environment = var.myenvironment 
   }
 

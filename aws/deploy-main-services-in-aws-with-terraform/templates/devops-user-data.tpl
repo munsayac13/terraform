@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WORKDIR=/tmp
+
 echo "Set timezone to US Central ..."
 timedatectl set-timezone America/Chicago
 
@@ -20,4 +22,13 @@ apt update
 
 echo "Install Components ..."
 apt install vim gzip tar curl wget unzip tmux dnsutils systemd
-apt upgrade
+apt upgrade --yes
+
+echo "Install AWS CLI ..."
+cd $WORKDIR
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
+echo "Install AZURE CLI ..."
+curl -L https://aka.ms/InstallAzureCli | /bin/bash
