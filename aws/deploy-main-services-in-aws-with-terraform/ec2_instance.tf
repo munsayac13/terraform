@@ -1,7 +1,7 @@
 resource "aws_instance" "nodeonelocal" {
   ami           = "ami-xxxxxxxxxx"
   instance_type = "r5.large"
-  subnet_id     = data.aws_subnet.subnet_private_a.id
+  subnet_id     = data.aws_subnet.mylocalone_subnet_private_a.id
   key_name      = "mylocalone_east"
 
   vpc_security_group_ids = [

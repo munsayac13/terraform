@@ -6,6 +6,14 @@ data "aws_subnet" "mylocalone_subnet_private_a" {
   }
 }
 
+data "aws_subnet" "mylocalone_subnet_public_b" {
+  vpc_id = local.vpc_id
+  filter {
+    name   = "tag:Name"
+    values = ["mylocalone-public-1a"]
+  }
+}
+
 data "aws_subnet" "mylocalone_subnet_private_b" {
   vpc_id = local.vpc_id
   filter {
@@ -14,7 +22,25 @@ data "aws_subnet" "mylocalone_subnet_private_b" {
   }
 }
 
+data "aws_subnet" "mylocalone_subnet_public_b" {
+  vpc_id = local.vpc_id
+  filter {
+    name   = "tag:Name"
+    values = ["mylocalone-public-1b"]
+  }
+}
 
 data "aws_s3_bucket" "mylocalone_terraform_bucket" {
   bucket = "mylocaloneterraformbucket"
-}_
+}
+
+data "aws_iam_policy_document" "nodepostgreslocal_iam_policy_document" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["rds.amazonaws.com"]
+    }
+  }
+}
