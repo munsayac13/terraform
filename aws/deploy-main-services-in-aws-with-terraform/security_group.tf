@@ -60,6 +60,15 @@ resource "aws_security_group" "default_security" {
   }
 
   ingress {
+    description = "Redis from OtherNetwork"
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = [ local.myothernetwork_cidr ]
+  }
+
+
+  ingress {
     description = "ICMP"
     from_port   = 0
     to_port     = 0
