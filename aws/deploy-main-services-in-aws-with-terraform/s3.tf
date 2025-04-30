@@ -126,4 +126,12 @@ IAMPOLICY
 
 }
 
+# Different Way 
+resource "aws_s3_bucket" "mylocalone_kinesis" {
+  bucket = "mylocalone_kinesis_stream"
+}
 
+resource "aws_s3_bucket_acl" "mylocalone_kinesis_bucket_acl" {
+  bucket = aws_s3_bucket.mylocalone_kinesis.id
+  acl    = "private"
+}
