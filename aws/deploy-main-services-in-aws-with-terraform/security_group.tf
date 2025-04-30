@@ -89,3 +89,45 @@ resource "aws_security_group" "default_security" {
   }
 }
 
+resource "aws_security_group" "activemq" {
+  name                    = "activemq"
+  description             = "Access to AMQ Servers"
+  vpc_id                  = local.vpc_id
+
+  ingress {
+    description           = "ActiveMQ JMX"
+    from_port             = 1099
+    to_port               = 1099
+    protocol              = "tcp"
+    cidr_blocks           = [local.mylocalone_cidr]
+  }
+
+  ingress {
+    description           = "ActiveMQ RMI"
+    from_port             = 1100
+    to_port               = 1100
+    protocol              = "tcp"
+    cidr_blocks           = [local.mylocalone_cidr]
+  }
+
+  ingress {
+    description           = "ActiveMQ Clients"
+    from_port             = 61616
+    to_port               = 61616
+    protocol              = "tcp"
+    cidr_blocks           = [local.mylocalone_cidr]
+  }
+
+  ingress {
+    description           = "ActiveMQ Web UI"
+    from_port             = 8161
+    to_port               = 8161
+    protocol              = "tcp"
+    cidr_blocks           = [local.mylocalone_cidr]
+  }
+
+  tags = {
+    Name = "ActiveMQ"
+  }
+
+}
