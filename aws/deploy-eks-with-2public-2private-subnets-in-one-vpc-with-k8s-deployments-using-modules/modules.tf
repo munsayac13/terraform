@@ -19,6 +19,26 @@ module "vpc" {
   tags = {
     Environment = var.myenvironment
   }
+
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = "1"
+  }
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = "1"
+  }
+
+  # Make eks cluster allow access from eks control plane to the webhook port of the AWS Load Balancer Controller
+
+  node_security_group_additional_rules = {
+    ingress_allow_access_from_control_plane = {
+      type                          = "ingress"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
+      source_cluster_security_group = true
+      description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
+    }
+  }
 }
 
 module "eks" {
@@ -163,5 +183,22 @@ module "cluster_autoscaler_irsa_role" {
     namespace_service_accounts = ["kube-system:cluster-autoscaler"]
   }
 }
+
+module "aws_load_balancer_controller_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.55.0"
+
+  role_name = "aws-load-balancer-controller"
+
+  attach_load_balancer_controller_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
+
 
 
