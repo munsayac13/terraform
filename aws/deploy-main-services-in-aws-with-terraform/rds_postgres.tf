@@ -56,8 +56,8 @@ resource "aws_rds_cluster_instance" "nodepostgreslocal-instance-2" {
 resource "aws_db_subnet_group" "mylocalone_subnet_group" {
   name                    = "mylocalone_subnet_group"
   subnet_ids              = [
-    data.aws_subnet.mylocalone_subnet_private_a.id,
-    data.aws_subnet.mylocalone_subnet_private_b.id,
+    aws_subnet.mylocalone_subnet_private_a.id,
+    aws_subnet.mylocalone_subnet_private_b.id,
   ]
 
   tags = {
